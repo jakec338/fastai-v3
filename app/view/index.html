@@ -32,21 +32,25 @@
       <div class='result-label'>
         <label id='result-label'></label>
       </div>
-    </div>
-        <!-- CSS -->
+              <!-- CSS -->
         <style>
         #my_camera{
          width: 320px;
          height: 240px;
          border: 1px solid black;
+         margin-left: auto;
+         margin-right: auto;
         }
         </style>
 
 
         <div id="my_camera"></div>
-        <p>Take picture with your webcamzz</p>
-        <input type=button value="Take Snapshot" onClick="take_snapshot()">
-        <div id="results" ></div>
+        <button class='choose-file-button' type='button' onclick='take_snapshot()'>Analyse via webcam</button>
+        <div class='result-label'>
+            <label id='result-label'></label>
+        </div>
+        
+    </div>
   </div>
 </div>
   <script src='../static/webcamjs/webcam.min.js'></script>

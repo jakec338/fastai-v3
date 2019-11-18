@@ -78,7 +78,7 @@ async function take_snapshot() {
    await postData('/return_image', data_uri).then(async function(res) {
        var result = await res.json();
        console.log(result)
-       document.getElementById("results").innerHTML = "<h1>"+result.classification+"</h1>"
+       document.getElementById("result-label").innerHTML = `Result = ${response["result"]}`;
    });
   } );
 }
