@@ -2,15 +2,13 @@
 <head>
   <meta charset='utf-8'>
   <link rel='stylesheet' href='../static/style.css'>
-  <script src='../static/client.js'></script>
 </head>
 <body>
 <div>
   <div class='center'>
-    <div class='title'>Classify Bear Images 🐻</div>
+    <div class='title'>Classify. Your. Fruit. OR. Vegetables</div>
     <p>
-      Use images of <strong>teddy</strong> bears, <strong>black</strong> bears, <strong>grizzly</strong> bears, or
-      all three!
+      Results not guaranteed
     </p>
     <div class='content'>
       <div class='no-display'>
@@ -35,7 +33,23 @@
         <label id='result-label'></label>
       </div>
     </div>
+        <!-- CSS -->
+        <style>
+        #my_camera{
+         width: 320px;
+         height: 240px;
+         border: 1px solid black;
+        }
+        </style>
+
+
+        <div id="my_camera"></div>
+        <p>Take picture with your webcamzz</p>
+        <input type=button value="Take Snapshot" onClick="take_snapshot()">
+        <div id="results" ></div>
   </div>
 </div>
+  <script src='../static/webcamjs/webcam.min.js'></script>
+  <script src='../static/client.js'></script>
 </body>
 </html>

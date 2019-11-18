@@ -4,6 +4,7 @@ import uvicorn
 from fastai import *
 from fastai.vision import *
 from io import BytesIO
+from datauri import DataURI
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
@@ -66,6 +67,33 @@ async def analyze(request):
     img = open_image(BytesIO(img_bytes))
     prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
+
+
+def get_ghg_data(class_pred):
+    apple_string = "An apple a day for a year is equivalent to  driving a regular petrol car 32 miles or heating an average British home for 2 days"
+    if(class_pred == "apples"):
+        return apple_string
+    else:
+        return "balls"
+    
+    
+def predict_image_from_bytes(bytes):
+    img = open_image(BytesIO(bytes))
+    pred_class,pred_idx,outputs = learn.predict(img)
+    print(outputs)
+    class_string = pred_class.obj
+    ghg_info = get_ghg_data(class_string)
+    #return PlainTextResponse('Class: '+ class_string + ". \n" + ghg_info)
+
+    return JSONResponse({ 'classification': class_string, 'ghg': ghg_info })
+
+@app.route('/return_image', methods=['POST'])
+async def return_image(request):
+        res = await request.body()
+        res = res.decode("utf-8")
+        uri = DataURI(res)
+        print(uri.data)
+        return predict_image_from_bytes(uri.data)
 
 
 if __name__ == '__main__':
