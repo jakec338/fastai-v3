@@ -11,6 +11,25 @@
       Results not guaranteed
     </p>
     <div class='content'>
+      
+        <!-- CSS -->
+        <style>
+        #my_camera{
+         width: 320px;
+         height: 240px;
+         border: 1px solid black;
+         margin-left: auto;
+         margin-right: auto;
+        }
+        </style>
+
+
+        <div id="my_camera"></div>
+        <button class='analyze-button' type='button' onclick='take_snapshot()'>Analyse via webcam</button>
+        <div class='result-label'>
+            <label id='result-label'></label>
+        </div>
+        
       <div class='no-display'>
         <input id='file-input'
                class='no-display'
@@ -29,27 +48,6 @@
       <div class='analyze'>
         <button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button>
       </div>
-      <div class='result-label'>
-        <label id='result-label'></label>
-      </div>
-              <!-- CSS -->
-        <style>
-        #my_camera{
-         width: 320px;
-         height: 240px;
-         border: 1px solid black;
-         margin-left: auto;
-         margin-right: auto;
-        }
-        </style>
-
-
-        <div id="my_camera"></div>
-        <button class='choose-file-button' type='button' onclick='take_snapshot()'>Analyse via webcam</button>
-        <div class='result-label'>
-            <label id='result-label'></label>
-        </div>
-        
     </div>
   </div>
 </div>
