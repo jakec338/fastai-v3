@@ -81,7 +81,7 @@ async function take_snapshot() {
        var result = await res.json();
        console.log(result)
        document.getElementById("result-label").innerHTML = `Result = ${result["classification"]}`;
-       document.getElementById("ghg-label").innerHTML = `For every ${result["serving"]} of ${result["classification"]} produced, ${result["ghg"]}Kg of Carbon Dioxide or equivalent Green House Gas is emmitted into the atmosphere`;
+       document.getElementById("ghg-label").innerHTML = `For every ${result["serving"]} of ${result["classification"]} produced, ${result["ghg"]}Kg of Carbon Dioxide or equivalent Green House Gas is emitted into the atmosphere`;
        
    });
   });
