@@ -9,6 +9,11 @@ from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
+from azure.cosmosdb.table.tableservice import TableService
+from azure.cosmosdb.table.models import Entity
+
+table_service = TableService(account_name='jakestorage', account_key='L0waKxaxNvlvJgDDWeeEuL7wNj/1vmQgAEUc6TOFut3oTVhTwkIeM2DxWXod1ItPMiVWgy6lCRwhLjbRZkHqdg==')
+
 
 #export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_url = 'https://www.dropbox.com/s/gfeg4tknlagf2gi/export_v3.pkl?dl=1'
@@ -17,6 +22,16 @@ export_file_name = 'export.pkl'
 #classes = ['black', 'grizzly', 'teddys']
 
 classes = ['apples', 'bananas', 'broccoli', 'leeks', 'onions', 'oranges', 'potatos', 'tomatos']
+
+classes_dict = dict(
+     apples='Apples',
+     bananas='Bananas',
+     broccoli='Brassicas',
+     leeks='Onions & Leeks',
+     oranges='Citrus Fruit',
+     potatos='Potatoes',
+     tomatos='Tomatoes'
+ )
 
 path = Path(__file__).parent
 
@@ -70,11 +85,13 @@ async def analyze(request):
 
 
 def get_ghg_data(class_pred):
-    apple_string = "An apple a day for a year is equivalent to  driving a regular petrol car 32 miles or heating an average British home for 2 days"
-    if(class_pred == "apples"):
-        return apple_string
-    else:
-        return "balls"
+    
+    food = classes_dict.get(class_pred)
+    food_data = table_service.get_entity('ghgfoodtable1', food, 'Food')
+    print("dict returns", food)
+    print("sql returns", food_data.Mean)
+    return food_data.Mean, food_data.Serving
+    
     
     
 def predict_image_from_bytes(bytes):
@@ -82,10 +99,11 @@ def predict_image_from_bytes(bytes):
     pred_class,pred_idx,outputs = learn.predict(img)
     print(outputs)
     class_string = pred_class.obj
-    ghg_info = get_ghg_data(class_string)
-    #return PlainTextResponse('Class: '+ class_string + ". \n" + ghg_info)
+    #ghg_info = get_ghg_data(class_string)
+    ghg_data, serving = get_ghg_data(class_string)
 
-    return JSONResponse({ 'classification': class_string, 'ghg': ghg_info })
+    #return JSONResponse({ 'classification': class_string, 'ghg': ghg_info })
+    return JSONResponse({ 'classification': class_string, 'ghg': ghg_data, 'serving': serving})
 
 @app.route('/return_image', methods=['POST'])
 async def return_image(request):
