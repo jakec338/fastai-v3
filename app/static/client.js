@@ -68,7 +68,6 @@ async function postData(url = '', data = {}) {
     referrer: 'no-referrer', // no-referrer, *client
     body: data // body data type must match "Content-Type" header
   });
-  console.log(response);
   return await response; // parses JSON response into native JavaScript objects
 }
 

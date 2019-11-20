@@ -90,8 +90,6 @@ def get_ghg_data(class_pred):
     
     food = classes_dict.get(class_pred)
     food_data = table_service.get_entity('ghgfoodtable1', food, 'Food')
-    print("dict returns", food)
-    print("sql returns", food_data.Mean)
     
     return food_data.Mean, food_data.Serving
     
@@ -103,10 +101,8 @@ def predict_image_from_bytes(bytes):
     for x in range(len(outputs)):
         print(classes[x], " :", outputs[x])
     class_string = pred_class.obj
-    #ghg_info = get_ghg_data(class_string)op
     ghg_data, serving = get_ghg_data(class_string)
 
-    #return JSONResponse({ 'classification': class_string, 'ghg': ghg_info })
     return JSONResponse({ 'classification': class_string, 'ghg': ghg_data, 'serving': serving})
 
 @app.route('/return_image', methods=['POST'])
@@ -114,7 +110,6 @@ async def return_image(request):
         res = await request.body()
         res = res.decode("utf-8")
         uri = DataURI(res)
-        print(uri.data)
         return predict_image_from_bytes(uri.data)
 
 
