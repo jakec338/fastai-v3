@@ -28,8 +28,10 @@ function analyze() {
   };
   xhr.onload = function(e) {
     if (this.readyState === 4) {
-      var response = JSON.parse(e.target.responseText);
-      el("result-label").innerHTML = `Result = ${response["result"]}`;
+      var result = JSON.parse(e.target.responseText);
+      el("result-label").innerHTML = `Result = ${result["classification"]}`;
+        
+      el("ghg-label").innerHTML = `For every ${result["serving"]} of ${result["classification"]} produced, ${result["ghg"]}Kg of Carbon Dioxide or equivalent Green House Gas is emmitted into the atmosphere`;
     }
     el("analyze-button").innerHTML = "Analyze";
   };
@@ -66,7 +68,7 @@ async function postData(url = '', data = {}) {
     referrer: 'no-referrer', // no-referrer, *client
     body: data // body data type must match "Content-Type" header
   });
-    console.log(response);
+  console.log(response);
   return await response; // parses JSON response into native JavaScript objects
 }
 
@@ -82,6 +84,6 @@ async function take_snapshot() {
        document.getElementById("ghg-label").innerHTML = `For every ${result["serving"]} of ${result["classification"]} produced, ${result["ghg"]}Kg of Carbon Dioxide or equivalent Green House Gas is emmitted into the atmosphere`;
        
    });
-  } );
+  });
 }
 

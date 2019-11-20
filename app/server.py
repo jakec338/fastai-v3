@@ -81,7 +81,9 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    
+    ghg_data, serving = get_ghg_data(str(prediction))
+    return JSONResponse({ 'classification': str(prediction), 'ghg': ghg_data, 'serving': serving})
 
 
 def get_ghg_data(class_pred):
@@ -90,6 +92,7 @@ def get_ghg_data(class_pred):
     food_data = table_service.get_entity('ghgfoodtable1', food, 'Food')
     print("dict returns", food)
     print("sql returns", food_data.Mean)
+    
     return food_data.Mean, food_data.Serving
     
     
@@ -97,9 +100,10 @@ def get_ghg_data(class_pred):
 def predict_image_from_bytes(bytes):
     img = open_image(BytesIO(bytes))
     pred_class,pred_idx,outputs = learn.predict(img)
-    print(outputs)
+    for x in range(len(outputs)):
+        print(classes[x], " :", outputs[x])
     class_string = pred_class.obj
-    #ghg_info = get_ghg_data(class_string)
+    #ghg_info = get_ghg_data(class_string)op
     ghg_data, serving = get_ghg_data(class_string)
 
     #return JSONResponse({ 'classification': class_string, 'ghg': ghg_info })
